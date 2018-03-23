@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>index.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="module.exports.html">exports</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+/**
+ * Wrap the last X words in an HTML tag to prevent them from wrapping (i.e. orphans)
+ * @param {HTMLElement} el - iframe element
+ * @param {Object} opts - Options
+ * @param {number} [opts.defaultAspectRatio=9/16] - Fallback aspect ratio if height and width are undefined
+ * @param {number|boolean} [opts.forceRatio=false] - Aspect ratio override (ignores iframe’s actual dimensions)
+ * @param {boolean} [opts.inlineStyles=true] - Apply inline styles (set to “false” if using CSS)
+ * @param {boolean} [opts.wrap=true] - Whether or not to add a wrapper div to the iframe. Setting to “false” means the video can’t be displayed wider than its original width.
+ * @param {string} [opts.classes=""] - Class(es) to add to the wrapper or iframe (depends on wrap option)
+ */
+
+export default class FluidFrame {
+  constructor(el, opts) {
+    var self = this;
+    this.el = el;
+
+    // Check if target element is an iframe
+    if (this.el.tagName.toLowerCase() !== "iframe") {
+      console.warn(
+        `FluidFrame only works on iframes, not &lt;${this.el.tagName.toLowerCase()}> tags`
+      );
+      return false;
+    }
+
+    // Use Object.assign() to merge “opts” object with default values in this.options
+    this.options = Object.assign(
+      {},
+      {
+        defaultAspectRatio: 9 / 16,
+        forceRatio: false,// set aspect ratio to use regardless of actual dimensions of iframe
+        inlineStyles: true,// apply inline styles to wrapper or iframe (depends on wrap option)
+        wrap: true,// adds a div wrapper around the iframe
+        classes: "" // custom class(es) to add to the wrapper or iframe (depends on wrap option)
+      },
+      opts
+    );
+
+    // If inline styles are disabled, “classes” and “forceRatio” must be defined.
+    if (
+      !this.options.inlineStyles &amp;&amp;
+      !this.options.classes &amp;&amp;
+      !this.options.forceRatio
+    ) {
+      console.warn(
+        "FluidFrame: If inline styles are disabled, a fixed aspect ratio must be defined along with custom classes."
+      );
+      return false;
+    }
+
+    // Get intrinsic dimensions
+    this.width = this.el.width ? parseInt(this.el.width) : this.el.offsetWidth;
+    this.height = this.el.height ? parseInt(this.el.height) : this.el.offsetHeight;
+
+    // Determine the aspect ratio
+    if (parseFloat(this.options.forceRatio)) {
+      this.aspectRatio = parseFloat(this.options.forceRatio);
+    } else {
+      this.aspectRatio =
+        !this.width &amp;&amp; !this.height
+          ? this.options.defaultAspectRatio
+          : this.height / this.width;
+    }
+
+    // Wrap iframe in div with padding-top equal to aspect ratio as a percentage
+    if (this.options.wrap) {
+      this.wrapper = document.createElement("div");
+      this.el.parentNode.insertBefore(this.wrapper, this.el);
+      this.wrapper.appendChild(this.el);
+    }
+
+    // Check for custom classes
+    if (this.options.classes.length) {
+      // Check if string contains multiple classes
+      if (this.options.classes.indexOf(" ") > -1) {
+        // Convert to array and remove empty items (caused by extra whitespace)
+        this.options.classes = this.options.classes
+          .split(" ")
+          .filter(n => n.length);
+      } else {
+        // We still need to convert a single class to an array
+        // in order to use the spread syntax below.
+        this.options.classes = [this.options.classes];
+      }
+
+      // Add classes
+      if (this.options.wrap) {
+        this.wrapper.classList.add(...this.options.classes);
+      } else {
+        this.el.classList.add(...this.options.classes);
+      }
+    }
+
+    // Add inline styles
+    if (this.options.inlineStyles) {
+      if (this.options.wrap) {
+        this.wrapper.setAttribute(
+          "style",
+          `padding-top: ${100 * this.aspectRatio}%; position: relative;`
+        );
+
+        // Set iframe to absolutely fill the parent div
+        this.el.setAttribute(
+          "style",
+          "height: 100%; left: 0; position: absolute; top: 0; width: 100%;"
+        );
+      } else {
+        // Inspired by https://github.com/dollarshaveclub/reframe.js#-noframejs
+        this.el.setAttribute(
+          "style", `display: block; height: ${100 * this.aspectRatio}vw; margin-left: auto; margin-right: auto; max-height: ${this.height}px; max-width: 100%; width: ${this.width}px;`
+        );
+      }
+    }
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 23 2018 00:07:29 GMT-0400 (EDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
