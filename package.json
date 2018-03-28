@@ -1,6 +1,6 @@
 {
   "name": "@threespot/fluid-iframe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Make iframes responsive",
   "main": "index.js",
   "homepage": "https://threespot.github.io/fluid-iframe/",
@@ -67,8 +67,7 @@
     "webpack-cli": "^2.0.10",
     "webpack-merge": "^4.1.1"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "directories": {
     "doc": "docs",
     "test": "test"
