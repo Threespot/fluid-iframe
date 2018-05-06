@@ -2,7 +2,7 @@
   "name": "@threespot/fluid-iframe",
   "version": "1.0.1",
   "description": "Make iframes responsive",
-  "main": "index.js",
+  "main": "dist/fluid-iframe.m.js",
   "homepage": "https://threespot.github.io/fluid-iframe/",
   "author": "Threespot <hello@threespot.com>",
   "contributors": [
